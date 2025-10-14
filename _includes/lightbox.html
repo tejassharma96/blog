@@ -1,0 +1,171 @@
+
+<link rel="stylesheet" href="{{ '/assets/css/lightbox.css' | relative_url }}">
+<div class="lb-overlay" id="lb" aria-modal="true" role="dialog" aria-label="Media viewer">
+  <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous">‹</button>
+  <div class="lb-content" id="lb-content">
+    <button class="lb-close" id="lb-close" aria-label="Close">×</button>
+  </div>
+  <button class="lb-nav lb-next" id="lb-next" aria-label="Next">›</button>
+  <div class="lb-caption" id="lb-caption" aria-live="polite"></div>
+</div>
+
+<script>
+(function() {
+  const overlay = document.getElementById('lb');
+  const content = document.getElementById('lb-content');
+  const closeBtn = document.getElementById('lb-close');
+  const prevBtn = document.getElementById('lb-prev');
+  const nextBtn = document.getElementById('lb-next');
+  const captionEl = document.getElementById('lb-caption');
+
+  let currentGroup = null;
+  let items = [];
+  let index = 0;
+
+  function clearContent() {
+    // remove everything except the close button
+    Array.from(content.children).forEach((child) => {
+      if (child !== closeBtn) child.remove();
+    });
+  }
+
+  function setCaption(text) {
+    if (text && text.trim().length > 0) {
+      captionEl.textContent = text;
+      captionEl.style.display = 'block';
+    } else {
+      captionEl.textContent = '';
+      captionEl.style.display = 'none';
+    }
+  }
+
+  function renderItem(it) {
+    clearContent();
+    if (it.type === 'image') {
+      const img = document.createElement('img');
+      img.src = it.src;
+      img.alt = it.caption || 'Image';
+      content.insertBefore(img, closeBtn);
+    } else if (it.type === 'video') {
+      const vid = document.createElement('video');
+      vid.controls = true;
+      vid.autoplay = true;
+      const type = 'video/' + (it.src.split('.').pop().split('?')[0].toLowerCase());
+      const source = document.createElement('source');
+      source.src = it.src;
+      source.type = type;
+      vid.appendChild(source);
+      content.insertBefore(vid, closeBtn);
+    } else if (it.type === 'youtube') {
+      const wrap = document.createElement('div');
+      wrap.className = 'yt-wrap-inlb';
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/' + it.ytid;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.frameBorder = '0';
+      wrap.appendChild(iframe);
+      content.insertBefore(wrap, closeBtn);
+    }
+    setCaption(it.caption || '');
+  }
+
+  function open(group, startIndex) {
+    currentGroup = group;
+    index = startIndex || 0;
+    overlay.classList.add('open');
+    renderItem(items[index]);
+  }
+
+  function close() {
+    overlay.classList.remove('open');
+    // Stop any playing video by clearing soon
+    setTimeout(clearContent, 150);
+  }
+
+  function collectGroup(group) {
+    const nodes = document.querySelectorAll('[data-group="' + group + '"]');
+    items = Array.from(nodes).map((el) => {
+      const type = el.getAttribute('data-type');
+      const caption = el.getAttribute('data-caption') || '';
+      if (type === 'youtube') {
+        return { type, ytid: el.getAttribute('data-ytid'), caption };
+      } else {
+        return { type, src: el.getAttribute('data-src'), caption };
+      }
+    });
+  }
+
+  function next() {
+    if (!items.length) return;
+    index = (index + 1) % items.length;
+    renderItem(items[index]);
+  }
+  function prev() {
+    if (!items.length) return;
+    index = (index - 1 + items.length) % items.length;
+    renderItem(items[index]);
+  }
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
+  });
+  closeBtn.addEventListener('click', close);
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  
+// Touch swipe handlers (mobile)
+let touchStartX = 0;
+let touchStartY = 0;
+let touchActive = false;
+
+function onTouchStart(e) {
+  if (!overlay.classList.contains('open')) return;
+  const t = e.touches ? e.touches[0] : e;
+  touchStartX = t.clientX;
+  touchStartY = t.clientY;
+  touchActive = true;
+}
+function onTouchEnd(e) {
+  if (!touchActive) return;
+  const t = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0] : e;
+  const dx = t.clientX - touchStartX;
+  const dy = t.clientY - touchStartY;
+  touchActive = false;
+  // Only consider mostly-horizontal swipes
+  if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx < 0) next(); else prev();
+  }
+}
+
+overlay.addEventListener('touchstart', onTouchStart, {passive: true});
+overlay.addEventListener('touchend', onTouchEnd, {passive: true});
+
+document.addEventListener('keydown', (e) => {
+
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Delegate clicks from day-media elements
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('.day-media a.ph, .day-media video, .day-media .yt-wrap');
+    if (!a) return;
+
+    e.preventDefault();
+    const group = a.getAttribute('data-group');
+    const type = a.getAttribute('data-type');
+
+    // build items for this group
+    collectGroup(group);
+
+    // find start index
+    const nodes = Array.from(document.querySelectorAll('[data-group="' + group + '"]'));
+    const startIndex = nodes.indexOf(a);
+    open(group, Math.max(0, startIndex));
+  });
+})();
+</script>

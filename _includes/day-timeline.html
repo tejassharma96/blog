@@ -1,0 +1,158 @@
+
+{%- comment -%}
+Per-post vertical timeline. Supports `media` items:
+- String URL (image/video)
+- Object with keys: src, kind: 'video' | 'image' (optional), caption
+- YouTube: {type: 'youtube', id: 'VIDEO_ID', caption: '...'}
+- Map embeds:
+    * {type: 'map', src: 'EMBED_URL', caption: '...'}
+    * {type: 'map', place: 'Honolulu Zoo', caption: '...'}  # auto builds Google Maps embed
+    * {type: 'map', lat: 21.3069, lng: -157.8583, caption: '...'}  # auto builds Google Maps embed with coords
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ '/assets/css/day-timeline.css' | relative_url }}">
+
+{%- assign items = include.events | default: page.events -%}
+{%- if items and items.size > 0 -%}
+<div class="day-timeline">
+  <div class="day-timeline-line" aria-hidden="true"></div>
+  {%- for ev in items -%}
+  {%- assign group_id = forloop.index0 -%}
+  <section class="day-item">
+    <div class="day-dot" aria-hidden="true"></div>
+    <div class="day-content">
+      <header class="day-head">
+        <h3 class="day-title">{{ ev.title | default: "Untitled" }}</h3>
+      </header>
+
+{%- assign chips = ev.chips | default: ev.tags -%}
+{%- if ev.place and chips -%}
+  {%- assign chips = chips | push: ev.place -%}
+{%- elsif ev.place and chips == nil -%}
+  {%- assign chips = ev.place | split: '|||' -%}
+{%- endif -%}
+{%- if ev.location and chips -%}
+  {%- assign chips = chips | push: ev.location -%}
+{%- elsif ev.location and chips == nil -%}
+  {%- assign chips = ev.location | split: '|||' -%}
+{%- endif -%}
+{%- if chips and chips.size > 0 -%}
+<ul class="chips">
+  {%- for c in chips -%}
+    {%- assign label = c -%}
+    {%- assign url = nil -%}
+    {%- if c.url -%}
+      {%- assign label = c.label | default: c.text | default: c.name -%}
+      {%- assign url = c.url -%}
+    {%- endif -%}
+    <li class="chip">
+      {%- if url -%}
+        <a href="{{ url }}" target="_blank" rel="noopener">{{ label }}</a>
+      {%- else -%}
+        <span>{{ c }}</span>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>
+{%- endif -%}
+
+      {%- if ev.text -%}
+      <div class="day-text">
+        {{ ev.text | markdownify }}
+      </div>
+      {%- endif -%}
+      {%- assign media = ev.media -%}
+      {%- if media -%}
+      <div class="day-media">
+        {%- for ph in media -%}
+          {%- assign is_string = ph | jsonify | slice: 0, 1 -%}
+          {%- if is_string == '"' or is_string == '\'' -%}
+            {%- assign url = ph -%}
+            {%- assign ext = url | split: '?' | first | split: '.' | last | downcase -%}
+            {%- if ext == 'mp4' or ext == 'webm' or ext == 'mov' -%}
+              <video controls preload="metadata" class="vid"
+                     data-group="ev{{ group_id }}"
+                     data-type="video"
+                     data-src="{{ url | relative_url }}"
+                     data-caption="">
+                <source src="{{ url | relative_url }}" type="video/{{ ext }}">
+              </video>
+            {%- else -%}
+              <a class="ph" href="{{ url | relative_url }}"
+                 data-group="ev{{ group_id }}"
+                 data-type="image"
+                 data-src="{{ url | relative_url }}"
+                 data-caption=""
+                 target="_blank" rel="noopener">
+                <img loading="lazy" src="{{ url | relative_url }}" alt="Media for {{ ev.title | escape }}">
+              </a>
+            {%- endif -%}
+          {%- else -%}
+            {%- assign t = ph.type | default: ph.kind -%}
+            {%- assign cap = ph.caption | default: "" -%}
+            {%- if t == 'youtube' and ph.id -%}
+              <div class="yt-wrap"
+                   data-group="ev{{ group_id }}"
+                   data-type="youtube"
+                   data-ytid="{{ ph.id | escape }}"
+                   data-caption="{{ cap | escape }}">
+                <iframe src="https://www.youtube.com/embed/{{ ph.id | escape }}"
+                        title="YouTube video" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        loading="lazy" allowfullscreen></iframe>
+              </div>
+            {%- elsif t == 'video' and ph.src -%}
+              {%- assign url = ph.src -%}
+              {%- assign ext = url | split: '?' | first | split: '.' | last | downcase -%}
+              <video controls preload="metadata" class="vid"
+                     data-group="ev{{ group_id }}"
+                     data-type="video"
+                     data-src="{{ url | relative_url }}"
+                     data-caption="{{ cap | escape }}">
+                <source src="{{ url | relative_url }}" type="video/{{ ext }}">
+              </video>
+            {%- elsif t == 'map' -%}
+              {%- if ph.src -%}
+                <div class="map-wrap"
+                     data-group="ev{{ group_id }}"
+                     data-type="map"
+                     data-src="{{ ph.src | escape }}"
+                     data-caption="{{ cap | escape }}">
+                  <iframe src="{{ ph.src | escape }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              {%- elsif ph.place -%}
+                {%- assign q = ph.place | uri_escape -%}
+                <div class="map-wrap"
+                     data-group="ev{{ group_id }}"
+                     data-type="map"
+                     data-src="https://www.google.com/maps?q={{ q }}&output=embed"
+                     data-caption="{{ cap | escape }}">
+                  <iframe src="https://www.google.com/maps?q={{ q }}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              {%- elsif ph.lat and ph.lng -%}
+                <div class="map-wrap"
+                     data-group="ev{{ group_id }}"
+                     data-type="map"
+                     data-src="https://www.google.com/maps?q={{ ph.lat }},{{ ph.lng }}&output=embed"
+                     data-caption="{{ cap | escape }}">
+                  <iframe src="https://www.google.com/maps?q={{ ph.lat }},{{ ph.lng }}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              {%- endif -%}
+            {%- elsif ph.src -%}
+              <a class="ph" href="{{ ph.src | relative_url }}"
+                 data-group="ev{{ group_id }}"
+                 data-type="image"
+                 data-src="{{ ph.src | relative_url }}"
+                 data-caption="{{ cap | escape }}"
+                 target="_blank" rel="noopener">
+                <img loading="lazy" src="{{ ph.src | relative_url }}" alt="Media for {{ ev.title | escape }}">
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </section>
+  {%- endfor -%}
+</div>
+{%- endif -%}

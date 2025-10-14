@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<main class="post-wrapper" style="max-width:860px;margin:2rem auto;padding:0 1rem;">
+  <article class="post">
+    <header style="margin-bottom:1rem;">
+      <h1 style="margin:0 0 .25rem 0;">{{ page.title }}</h1>
+      <div style="color:#9aa3af;">
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
+        {%- if page.location -%}
+        <span> • {{ page.location }}</span>
+        {%- endif -%}
+      </div>
+    </header>
+    <div class="post-content">
+      {{ content }}
+    </div>
+  </article>
+</main>
+
+{% include lightbox.html %}

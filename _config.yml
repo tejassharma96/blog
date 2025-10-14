@@ -1,27 +1,39 @@
+title: "Tejas's R&R Travels"
+description: "Follow along as Tejas travels through around!"
+baseurl: ""
+url: ""
+minimal_mistakes_skin: dark
 
-title: "Asia Travel Timeline"
-description: "Daily travel log with a clean, dark vertical timeline"
-baseurl: "" # the subpath of your site, e.g. /blog
-url: ""     # the base hostname & protocol, e.g. https://username.github.io
-
-remote_theme: vaibhavvikas/jekyll-theme-minimalistic
+# remote_theme: vaibhavvikas/jekyll-theme-minimalistic
+remote_theme: mmistakes/minimal-mistakes
 
 plugins:
   - jekyll-remote-theme
+  - jekyll-remote-cache
 
-# Collections / Posts
 collections:
   posts:
     output: true
 
-# Navigation (Minimalistic supports nav in config)
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: false
+
 nav:
   - name: Home
     link: /
   - name: Timeline
     link: /timeline/
 
-# Build settings
 markdown: kramdown
 kramdown:
   input: GFM
