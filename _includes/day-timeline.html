@@ -70,6 +70,7 @@ Per-post vertical timeline. Supports `media` items:
             {%- assign ext = url | split: '?' | first | split: '.' | last | downcase -%}
             {%- if ext == 'mp4' or ext == 'webm' or ext == 'mov' -%}
               <video controls preload="metadata" class="vid"
+                     playsinline webkit-playsinline
                      data-group="ev{{ group_id }}"
                      data-type="video"
                      data-src="{{ url | relative_url }}"
@@ -104,6 +105,7 @@ Per-post vertical timeline. Supports `media` items:
               {%- assign url = ph.src -%}
               {%- assign ext = url | split: '?' | first | split: '.' | last | downcase -%}
               <video controls preload="metadata" class="vid"
+                     playsinline webkit-playsinline
                      data-group="ev{{ group_id }}"
                      data-type="video"
                      data-src="{{ url | relative_url }}"

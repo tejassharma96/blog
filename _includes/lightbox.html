@@ -28,12 +28,16 @@
   function disableScroll() {
     storedScroll = window.scrollY || document.documentElement.scrollTop || 0;
     body.style.top = `-${storedScroll}px`;
+    body.style.position = 'fixed';
+    body.style.width = '100%';
     body.classList.add('lb-no-scroll');
   }
 
   function enableScroll() {
     body.classList.remove('lb-no-scroll');
     body.style.top = '';
+    body.style.position = '';
+    body.style.width = '';
     window.scrollTo(0, storedScroll);
   }
 
@@ -67,6 +71,9 @@
       const vid = document.createElement('video');
       vid.controls = true;
       vid.autoplay = true;
+      vid.playsInline = true;
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('webkit-playsinline', '');
       const type = 'video/' + (it.src.split('.').pop().split('?')[0].toLowerCase());
       const source = document.createElement('source');
       source.src = it.src;
@@ -170,6 +177,16 @@ function onTouchEnd(e) {
 
 overlay.addEventListener('touchstart', onTouchStart, {passive: true});
 overlay.addEventListener('touchend', onTouchEnd, {passive: true});
+overlay.addEventListener('touchmove', (e) => {
+  if (overlay.classList.contains('open')) {
+    e.preventDefault();
+  }
+}, {passive: false});
+overlay.addEventListener('wheel', (e) => {
+  if (overlay.classList.contains('open')) {
+    e.preventDefault();
+  }
+}, {passive: false});
 
 document.addEventListener('keydown', (e) => {
 
