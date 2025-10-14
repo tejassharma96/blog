@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Day 1 — To Honolulu"
-date: 2025-01-07
-location: "Dallas, TX -> Honolulu, Hawaii"
+date: 2025-10-12
+location: "Dallas, Texas -> Honolulu, Hawaii"
 cover_image: /assets/images/day1/beach.jpg
 summary: "Headed out!"
 tags: [hawaii, honolulu]
@@ -30,7 +30,7 @@ events:
         url: "https://maps.app.goo.gl/i6VmaqT9j8UnQwW28"
   - title: "Dinner!"
     text: |
-      Had to get poke for dinner of course! Walked to a close by poke shop and ordered a combo of two delicious types of poke. Followed it up with some Hawaiian shaved ice, which was a delicious refreshing treat (although I wasn't able to finish it).
+      Had to get poke for dinner of course! Walked to a close by poke shop and ordered a combo of two delicious types of poke. Followed it up with some Hawaiian shaved ice, which was a delicious refreshing treat (although I wasn't able to finish it). (Click into the images for captions about what specifically they are!)
     media:
       - src: /assets/images/day1/poke.jpg
         caption: "Yuzu Citrus Chili Pepper Ahi on the left, Ginger Scallion Miso Salmon on the right"
@@ -41,6 +41,12 @@ events:
         url: "https://maps.app.goo.gl/VCPTDp7y8MsewW7k9"
       - label: "Shave Ice Waikiki"
         url: "https://maps.app.goo.gl/dC7pKxZwmuBAqXpw5"
+  - title: "The Bus"
+    text: |
+      While walking home I saw a local bus and was amused to discover that their bus system is named "The Bus"
+    media:
+      - src: /assets/images/day1/thebus.jpg
+        caption: "The Bus!"
 ---
 
 Traveling out was a slog but I'm excited for the journey ahead!

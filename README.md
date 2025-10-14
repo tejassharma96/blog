@@ -70,7 +70,7 @@ events:
 ```
 
 - String items are treated by extension: `.jpg/.png/...` → image, `.mp4/.webm/.mov` → video.
-- Objects support `{src, kind: 'video'}` or `{type: 'youtube', id: '...'}`.
+- Objects support `{src, type: 'video'}` or `{type: 'youtube', id: '...'}`.
 
 
 ### Lightbox navigation & captions
@@ -86,7 +86,7 @@ events:
       - src: /assets/images/day3/zoo-1.jpg
         caption: "Giraffe feeding time"
       - src: /assets/videos/day3/zoo.mp4
-        kind: video
+        type: video
         caption: "Short clip of the aviary"
       - type: youtube
         id: dQw4w9WgXcQ

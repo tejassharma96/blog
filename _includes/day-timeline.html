@@ -2,7 +2,7 @@
 {%- comment -%}
 Per-post vertical timeline. Supports `media` items:
 - String URL (image/video)
-- Object with keys: src, kind: 'video' | 'image' (optional), caption
+- Object with keys: src, type: 'video' | 'image' (optional), caption
 - YouTube: {type: 'youtube', id: 'VIDEO_ID', caption: '...'}
 - Map embeds:
     * {type: 'map', src: 'EMBED_URL', caption: '...'}
@@ -87,7 +87,7 @@ Per-post vertical timeline. Supports `media` items:
               </button>
             {%- endif -%}
           {%- else -%}
-            {%- assign t = ph.type | default: ph.kind -%}
+            {%- assign t = ph.type | default: 'image' -%}
             {%- assign cap = ph.caption | default: "" -%}
             {%- if t == 'youtube' and ph.id -%}
               <div class="yt-wrap"
