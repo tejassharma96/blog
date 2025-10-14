@@ -1,0 +1,28 @@
+
+title: "Asia Travel Timeline"
+description: "Daily travel log with a clean, dark vertical timeline"
+baseurl: "" # the subpath of your site, e.g. /blog
+url: ""     # the base hostname & protocol, e.g. https://username.github.io
+
+remote_theme: vaibhavvikas/jekyll-theme-minimalistic
+
+plugins:
+  - jekyll-remote-theme
+
+# Collections / Posts
+collections:
+  posts:
+    output: true
+
+# Navigation (Minimalistic supports nav in config)
+nav:
+  - name: Home
+    link: /
+  - name: Timeline
+    link: /timeline/
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+permalink: /:year/:month/:day/:title/

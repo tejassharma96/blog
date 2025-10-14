@@ -1,0 +1,35 @@
+
+{%- comment -%}
+Renders a vertical timeline of posts in reverse chronological order.
+Uses front matter fields: title, date, summary, cover_image, location.
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ '/assets/css/timeline.css' | relative_url }}">
+
+<div class="timeline">
+  {%- assign timeline_posts = site.posts | sort: 'date' | reverse -%}
+  {%- for post in timeline_posts -%}
+  <article class="timeline-item">
+    <div class="timeline-dot" aria-hidden="true"></div>
+    <div class="timeline-content">
+      <a class="timeline-title" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+      <div class="timeline-meta">
+        <time datetime="{{ post.date | date_to_xmlschema }}">
+          {{ post.date | date: "%b %-d, %Y" }}
+        </time>
+        {%- if post.location -%}
+        <span class="sep">•</span>
+        <span class="loc">{{ post.location }}</span>
+        {%- endif -%}
+      </div>
+      {%- if post.cover_image -%}
+      <a href="{{ post.url | relative_url }}">
+        <img class="cover" src="{{ post.cover_image | relative_url }}" alt="Cover image for {{ post.title | escape }}">
+      </a>
+      {%- endif -%}
+      {%- if post.summary -%}
+      <p class="summary">{{ post.summary }}</p>
+      {%- endif -%}
+    </div>
+  </article>
+  {%- endfor -%}
+</div>
