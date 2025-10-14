@@ -113,9 +113,8 @@
 }
 
 .day-media .vid {
-  /* For non-object-fit video elements, let browser handle aspect */
-  height: auto;
-  aspect-ratio: 16 / 9;
+  height: 180px;
+  aspect-ratio: auto;
 }
 
 .yt-wrap {
