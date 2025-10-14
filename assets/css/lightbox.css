@@ -1,5 +1,11 @@
 
 /* Minimal Lightbox overlay with navigation & captions */
+body.lb-no-scroll {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
 .lb-overlay {
   position: fixed;
   inset: 0;
@@ -20,6 +26,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.lb-content.anim-forward > *,
+.lb-content.anim-backward > * {
+  animation-duration: 0.28s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+
+.lb-content.anim-forward > * {
+  animation-name: lb-slide-in;
+}
+
+.lb-content.anim-backward > * {
+  animation-name: lb-slide-out;
 }
 
 .lb-content img,
@@ -90,4 +111,26 @@
 @media (max-width: 600px) {
   .lb-close { top: -40px; right: 0; }
   .lb-nav { display: none; } /* rely on swipe/keys on small screens */
+}
+
+@keyframes lb-slide-in {
+  from {
+    transform: translateX(32px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes lb-slide-out {
+  from {
+    transform: translateX(-32px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

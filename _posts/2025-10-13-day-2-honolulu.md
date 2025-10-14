@@ -4,7 +4,7 @@ title: "Day 2 — Honolulu Zoo"
 date: 2025-10-13
 location: "Honolulu, Hawaii"
 cover_image: /assets/images/day2/fennec-fox.jpg
-summary: "Headed out!"
+summary: "Wandering Waikiki"
 tags: [hawaii, honolulu]
 events:
   - title: "Scallop Brunch"

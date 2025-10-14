@@ -1,4 +1,6 @@
 title: "Tejas's R&R Travels"
+name: "Tejas Sharma"
+repository: "tejassharma96/blog"
 description: "Follow along as Tejas travels through around!"
 baseurl: "/blog"
 url: ""
@@ -14,6 +16,13 @@ plugins:
 collections:
   posts:
     output: true
+
+atom_feed:
+  hide: true
+
+search: true
+lunr:
+  search_within_pages: true
 
 defaults:
   # _posts

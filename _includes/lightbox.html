@@ -17,10 +17,25 @@
   const prevBtn = document.getElementById('lb-prev');
   const nextBtn = document.getElementById('lb-next');
   const captionEl = document.getElementById('lb-caption');
+  const body = document.body;
 
   let currentGroup = null;
   let items = [];
   let index = 0;
+  let currentDirection = 'forward';
+  let storedScroll = 0;
+
+  function disableScroll() {
+    storedScroll = window.scrollY || document.documentElement.scrollTop || 0;
+    body.style.top = `-${storedScroll}px`;
+    body.classList.add('lb-no-scroll');
+  }
+
+  function enableScroll() {
+    body.classList.remove('lb-no-scroll');
+    body.style.top = '';
+    window.scrollTo(0, storedScroll);
+  }
 
   function clearContent() {
     // remove everything except the close button
@@ -41,6 +56,8 @@
 
   function renderItem(it) {
     clearContent();
+    content.classList.remove('anim-forward', 'anim-backward');
+
     if (it.type === 'image') {
       const img = document.createElement('img');
       img.src = it.src;
@@ -68,12 +85,21 @@
       content.insertBefore(wrap, closeBtn);
     }
     setCaption(it.caption || '');
+
+    const animClass = currentDirection === 'backward' ? 'anim-backward' : 'anim-forward';
+    requestAnimationFrame(() => {
+      content.classList.remove('anim-forward', 'anim-backward');
+      void content.offsetWidth;
+      content.classList.add(animClass);
+    });
   }
 
   function open(group, startIndex) {
     currentGroup = group;
     index = startIndex || 0;
+    currentDirection = 'forward';
     overlay.classList.add('open');
+    disableScroll();
     renderItem(items[index]);
   }
 
@@ -81,6 +107,7 @@
     overlay.classList.remove('open');
     // Stop any playing video by clearing soon
     setTimeout(clearContent, 150);
+    enableScroll();
   }
 
   function collectGroup(group) {
@@ -99,11 +126,13 @@
   function next() {
     if (!items.length) return;
     index = (index + 1) % items.length;
+    currentDirection = 'forward';
     renderItem(items[index]);
   }
   function prev() {
     if (!items.length) return;
     index = (index - 1 + items.length) % items.length;
+    currentDirection = 'backward';
     renderItem(items[index]);
   }
 
@@ -157,7 +186,6 @@ document.addEventListener('keydown', (e) => {
 
     e.preventDefault();
     const group = a.getAttribute('data-group');
-    const type = a.getAttribute('data-type');
 
     // build items for this group
     collectGroup(group);
