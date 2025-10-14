@@ -152,7 +152,7 @@ document.addEventListener('keydown', (e) => {
 
   // Delegate clicks from day-media elements
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('.day-media a.ph, .day-media video, .day-media .yt-wrap');
+    const a = e.target.closest('.day-media a.ph, .day-media button.ph, .day-media video, .day-media .yt-wrap');
     if (!a) return;
 
     e.preventDefault();

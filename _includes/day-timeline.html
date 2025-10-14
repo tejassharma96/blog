@@ -77,14 +77,14 @@ Per-post vertical timeline. Supports `media` items:
                 <source src="{{ url | relative_url }}" type="video/{{ ext }}">
               </video>
             {%- else -%}
-              <a class="ph" href="{{ url | relative_url }}"
-                 data-group="ev{{ group_id }}"
-                 data-type="image"
-                 data-src="{{ url | relative_url }}"
-                 data-caption=""
-                 target="_blank" rel="noopener">
+              <button type="button" class="ph"
+                      data-group="ev{{ group_id }}"
+                      data-type="image"
+                      data-src="{{ url | relative_url }}"
+                      data-caption=""
+                      aria-label="View image for {{ ev.title | escape }}">
                 <img loading="lazy" src="{{ url | relative_url }}" alt="Media for {{ ev.title | escape }}">
-              </a>
+              </button>
             {%- endif -%}
           {%- else -%}
             {%- assign t = ph.type | default: ph.kind -%}
@@ -138,14 +138,14 @@ Per-post vertical timeline. Supports `media` items:
                 </div>
               {%- endif -%}
             {%- elsif ph.src -%}
-              <a class="ph" href="{{ ph.src | relative_url }}"
-                 data-group="ev{{ group_id }}"
-                 data-type="image"
-                 data-src="{{ ph.src | relative_url }}"
-                 data-caption="{{ cap | escape }}"
-                 target="_blank" rel="noopener">
+              <button type="button" class="ph"
+                      data-group="ev{{ group_id }}"
+                      data-type="image"
+                      data-src="{{ ph.src | relative_url }}"
+                      data-caption="{{ cap | escape }}"
+                      aria-label="View image for {{ ev.title | escape }}">
                 <img loading="lazy" src="{{ ph.src | relative_url }}" alt="Media for {{ ev.title | escape }}">
-              </a>
+              </button>
             {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
