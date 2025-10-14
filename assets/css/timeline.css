@@ -98,8 +98,3 @@
     margin: 0.25rem 0 0 0;
     line-height: 1.6;
 }
-
-body {
-    background: var(--bg);
-    color: var(--text);
-}
