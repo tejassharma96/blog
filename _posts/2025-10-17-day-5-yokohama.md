@@ -63,6 +63,7 @@ events:
       I realized google maps screwed me on the way over - there's a shinkansen (bullet train) between Tokyo and Yokohama that I could've taken! Actually, I think it was just saving me a bunch of money but I wanted to ride the fast train 😅. I did on the way back, which made a ~50 minute journey take ~25 minutes instead!
     media:
     - src: /assets/images/day5/shinkansen.mp4
+      type: video
       caption: "The front of the shinkansen trains is inspired by the beak of the kingfisher"
     - id: iMtXqTmfta0
       type: youtube
