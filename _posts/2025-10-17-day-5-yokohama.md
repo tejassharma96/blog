@@ -19,7 +19,7 @@ events:
       caption: "Famichiki is basically just a breaded chicken cutlet. I wanted to try it since it has something of a cult-like following online. I got the spicy famichiki and it was surprisingly actually quite spicy. Yum!"
   - title: "Don Quijote"
     text: |
-      I headed to Don Quijote, which is a discount shopping store since I had forgotten to bring a drawstring bag (for ease of carrying stuff around without my whole backpack). I didn't find one, but I did pick up this neat little shoulder bag and used that during the day.
+      I headed to Don Quijote, which is a discount shopping store, since I had forgotten to bring a drawstring bag (for ease of carrying stuff around without my whole backpack). I didn't find one, but I did pick up this neat little shoulder bag and used that during the day.
     media:
     - src: /assets/images/day5/donki.jpg
       caption: "The very colourful entrance to Don Quijote"
