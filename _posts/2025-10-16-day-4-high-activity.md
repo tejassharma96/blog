@@ -73,6 +73,7 @@ events:
     chips:
     - label: "Sato's Sushi Class"
       url: "Sake Tasting + Food Tour"
+  - title: "Izakaya Food Tour"
     text: |
       After heading back to my hotel to rest for a bit, I headed out again for more food! We started with an hour-long sake tasting session where I learned about how sake is made and what the differences are between the various types of sake. After that, we headed out to various restaurants around Shinjuku and Shibuya to taste a bunch of different dishes!
     media:
