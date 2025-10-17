@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 5 — Yokohama Day Trip"
-date: 2025-10-14
+date: 2025-10-17
 location: "Tokyo + Yokohama, Japan"
 cover_image: /assets/images/day5/ramen-museum.jpg
 summary: "A trip to Yokohama with a bunch of ramen!"
